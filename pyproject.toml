@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nl2sql-analytics-agent"
+version = "0.1.0"
+description = "Offline-first natural language to SQL analytics agent over a small demo warehouse."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "Alexandru Cojocari" }]
+keywords = ["nl2sql", "analytics", "text-to-sql", "fastapi", "sqlite", "genai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Database",
+]
+dependencies = [
+    "fastapi>=0.115",
+    "httpx>=0.27",
+    "sqlglot>=25",
+    "uvicorn>=0.30",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27",
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[project.urls]
+Homepage = "https://github.com/DatadrivenAlex/nl2sql-analytics-agent"
+Repository = "https://github.com/DatadrivenAlex/nl2sql-analytics-agent"
+
+[project.scripts]
+nl2sql = "nl2sql.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"nl2sql.warehouse" = ["*.sql"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated:UserWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E501"]

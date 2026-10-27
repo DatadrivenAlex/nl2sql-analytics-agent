@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      NL2SQL_DB_PATH: /app/data/analytics.sqlite
+      NL2SQL_LLM_MODE: stub
+      NL2SQL_MAX_ROWS: "100"
+      NL2SQL_QUERY_TIMEOUT_S: "5"
+    volumes:
+      - nl2sql-data:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  nl2sql-data:
